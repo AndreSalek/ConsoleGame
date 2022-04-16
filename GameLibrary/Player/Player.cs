@@ -1,10 +1,5 @@
 ﻿using GameLibrary.Items;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace GameLibrary.Player
 {
     public abstract class Player : IPlayerWithAttributes
@@ -32,9 +27,9 @@ namespace GameLibrary.Player
         //Simulates 1v1 battle between two players
         //Battle is divided into turns
         //1 turn is when both players had a chance to attack
-        public IPlayer Duel(Player opponent)
+        public Player Duel(Player opponent)
         {
-            IPlayer winner;
+            Player winner;
             int turn = 0;
             var firstAttack = GenerateNumberInRange(0, 100);
             bool attackerFirst = (firstAttack <= 50) ? true : false; 
@@ -70,12 +65,12 @@ namespace GameLibrary.Player
                 OnDamageReceived(player, new DamageEventArgs { Player = player1, DamageTaken = dmg });
             }
             if (player.Health == 0 || player1.Health == 0) return;
-            if (mitigated1) OnDamageReceived(player1, new DamageEventArgs { Player = this, DamageTaken = 0 });
+            if (mitigated1) OnDamageReceived(player1, new DamageEventArgs { Player = player, DamageTaken = 0 });
             else
             {
                 var dmg = GenerateNumberInRange(player1.MinDamage, player1.MaxDamage);
                 player.Health -= dmg;
-                OnDamageReceived(player1, new DamageEventArgs { Player = this, DamageTaken = dmg });
+                OnDamageReceived(player1, new DamageEventArgs { Player = player, DamageTaken = dmg });
             }
         }
         //this method decides how much damage will be dealt based on player attributes and min max damage

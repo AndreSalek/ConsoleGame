@@ -1,0 +1,4 @@
+{
+  //in test explorer changes name to method name instead of entire path
+  "methodDisplay": "method"
+}

@@ -1,13 +1,9 @@
 ﻿using System;
 using GameLibrary.Items;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameLibrary.Player
 {
-    class Mage : Player
+    public class Mage : Player
     {
         public override string Class { get; set; } = "Mage";
         public Mage(string name, int str, int dex, int intell, int vit)

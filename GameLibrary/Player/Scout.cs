@@ -1,13 +1,9 @@
 ﻿using System;
 using GameLibrary.Items;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameLibrary.Player
 {
-    class Scout : Player
+    public class Scout : Player
     {
         public override string Class { get; set; } = "Scout";
         public Scout(string name, int str, int dex, int intell, int vit)
