@@ -22,7 +22,7 @@ namespace GameLibrary.Player
             UpdateMaxHealth();
             RestoreHealth();
         }
-        protected override bool BlockOrDodge(IPlayer attacker)
+        public override bool BlockOrDodge(Player attacker)
         {
             return false;
         }

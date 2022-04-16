@@ -26,14 +26,13 @@ namespace GameLibrary.Player
         }
 
         //returns true if attack was blocked or dodged
-        protected override bool BlockOrDodge(IPlayer attacker)
+        public override bool BlockOrDodge(Player attacker)
         {
             //mage attacks cannot be blocked, so if attacking player is mage -> damage is always received
             if (attacker.Class == "Mage") return false;
             else{
                 //Warriors have 25 percent chance to block damage
-                Random random = new Random();
-                var outcome = random.Next(0, 100);
+                var outcome = GenerateNumberInRange(0, 100);
                 if (outcome <= 25) return true;
                 else return false;
             }

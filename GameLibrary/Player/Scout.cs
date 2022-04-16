@@ -23,15 +23,14 @@ namespace GameLibrary.Player
             RestoreHealth();
         }
 
-        protected override bool BlockOrDodge(IPlayer attacker)
+        public override bool BlockOrDodge(Player attacker)
         {
             //mage attacks cannot be blocked, so if attacking player is mage -> damage is always received
             if (attacker.Class == "Mage") return false;
             else
             {
                 //Scouts  have 50 percent chance to dodge damage
-                Random random = new Random();
-                var outcome = random.Next(0, 100);
+                var outcome = GenerateNumberInRange(0, 100);
                 if (outcome <= 50) return true;
                 else return false;
             }

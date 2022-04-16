@@ -14,7 +14,7 @@ namespace GameLibrary.Player
         public int MaxDamage { get; set; }
         public event EventHandler<DamageEventArgs> DamageReceived;
 
-        IPlayer Duel(IPlayer opponent);
+        IPlayer Duel(Player opponent);
         void ReceiveReward();
         void RestoreHealth();
         public int GetMainAttributeValue();
