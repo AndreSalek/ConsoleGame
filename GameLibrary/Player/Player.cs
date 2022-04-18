@@ -43,7 +43,6 @@ namespace GameLibrary.Player
             }
             if (Health == 0) winner = opponent;
             else winner = this;
-            Console.WriteLine($"Player {winner.Name} has won the duel.");
             RestoreHealth();
             opponent.RestoreHealth();
 

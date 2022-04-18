@@ -8,7 +8,11 @@ namespace GameLibrary
 {
     public class Logger
     {
-        public void WriteIntro()
+        public void WriteToFile(string text)
+        {
+
+        }
+        public void ReadFromFile()
         {
 
         }

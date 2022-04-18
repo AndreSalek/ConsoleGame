@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using GameLibrary;
 using GameLibrary.Player;
 
 namespace ConsoleUI
@@ -8,11 +8,16 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            Warrior player = new Warrior("Mark",40, 10, 10, 10);
-            Warrior player1 = new Warrior("Bob", 35, 10, 10 , 10);
-            player.DamageReceived += Player_DamageReceived;
-            player.Duel(player1);
-            Console.ReadKey();
+            Factory factory = new Factory();
+            string[] options = new string[3] {"Warrior", "Scout", "Mage"};
+            string message = "Choose one of following classes";
+            //Console.WriteLine("Welcome!");
+            //Console.WriteLine("What is your name?");
+            Menu chooseClassMenu = new Menu(options, message);
+            int i = chooseClassMenu.Run();
+            Console.WriteLine("Choose one of following classes");
+            
+            
         }
 
         private static void Player_DamageReceived(object sender, DamageEventArgs e)
