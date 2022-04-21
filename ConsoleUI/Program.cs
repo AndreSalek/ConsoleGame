@@ -8,15 +8,41 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            Factory factory = new Factory();
-            string[] options = new string[3] {"Warrior", "Scout", "Mage"};
-            string message = "Choose one of following classes";
-            //Console.WriteLine("Welcome!");
-            //Console.WriteLine("What is your name?");
-            Menu chooseClassMenu = new Menu(options, message);
-            int i = chooseClassMenu.Run();
-            Console.WriteLine("Choose one of following classes");
-            
+            try
+            {
+                Factory factory = new Factory();
+                string[] options = new string[3] { "Warrior", "Scout", "Mage" };
+                string message = "Choose one of following classes";
+                Console.WriteLine("Welcome!");
+                Console.WriteLine("What is your name?");
+                string name = Console.ReadLine();
+                Menu classMenu = new Menu(options, message);
+                int index = classMenu.Run();
+                if (index == 0)
+                {
+                    Player player = factory.CreateWarrior(name);
+                    Game game = new Game(player);
+                    game.Run();
+                }
+                else if (index == 1)
+                {
+                    Player player = factory.CreateScout(name);
+                    Game game = new Game(player);
+                    game.Run();
+
+                }
+                else if (index == 2)
+                {
+                    Player player = factory.CreateMage(name);
+                    Game game = new Game(player);
+                    game.Run();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception \n"+ ex);
+            }
             
         }
 
