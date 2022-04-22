@@ -20,20 +20,20 @@ namespace ConsoleUI
                 int index = classMenu.Run();
                 if (index == 0)
                 {
-                    Player player = factory.CreateWarrior(name);
+                    PlayerModel player = factory.CreateWarrior(name);
                     Game game = new Game(player);
                     game.Run();
                 }
                 else if (index == 1)
                 {
-                    Player player = factory.CreateScout(name);
+                    PlayerModel player = factory.CreateScout(name);
                     Game game = new Game(player);
                     game.Run();
 
                 }
                 else if (index == 2)
                 {
-                    Player player = factory.CreateMage(name);
+                    PlayerModel player = factory.CreateMage(name);
                     Game game = new Game(player);
                     game.Run();
 

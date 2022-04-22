@@ -14,8 +14,9 @@ namespace GameLibrary.Player
         public int MaxDamage { get; set; }
         public event EventHandler<DamageEventArgs> DamageReceived;
 
-        Player Duel(Player opponent);
-        void ReceiveReward();
+        void ReceiveReward(int experience, int gold, IItem item);
+        void ReceiveDamage(PlayerModel attacker, int dmg);
+        bool BlockOrDodge(PlayerModel attacker);
         void RestoreHealth();
         public int GetMainAttributeValue();
         public void UpdateDamage();

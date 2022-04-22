@@ -3,7 +3,7 @@ using GameLibrary.Items;
 
 namespace GameLibrary.Player
 {
-    public class Scout : Player
+    public class Scout : PlayerModel
     {
         public override string Class { get; set; } = "Scout";
         public Scout(string name, int str, int dex, int intell, int vit)
@@ -19,24 +19,22 @@ namespace GameLibrary.Player
             RestoreHealth();
         }
 
-        public override bool BlockOrDodge(Player attacker)
+        public override bool BlockOrDodge(PlayerModel attacker)
         {
             //mage attacks cannot be blocked, so if attacking player is mage -> damage is always received
             if (attacker.Class == "Mage") return false;
             else
             {
                 //Scouts  have 50 percent chance to dodge damage
-                var outcome = GenerateNumberInRange(0, 100);
+                var outcome = new Random().Next(0, 100);
                 if (outcome <= 50) return true;
                 else return false;
             }
         }
 
-        public override void ReceiveReward()
+        public override void ReceiveReward(int experience, int gold, IItem item)
         {
             throw new NotImplementedException();
         }
-
-
     }
 }

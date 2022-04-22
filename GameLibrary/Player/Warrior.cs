@@ -1,10 +1,11 @@
 ﻿using GameLibrary.Items;
+using GameLibrary.Interactions;
 using System;
 
 
 namespace GameLibrary.Player
 {
-    public class Warrior : Player
+    public class Warrior : PlayerModel
     {
 
         public override string Class { get;  set; } = "Warrior";
@@ -23,18 +24,18 @@ namespace GameLibrary.Player
         }
 
         //returns true if attack was blocked or dodged
-        public override bool BlockOrDodge(Player attacker)
+        public override bool BlockOrDodge(PlayerModel attacker)
         {
             //mage attacks cannot be blocked, so if attacking player is mage -> damage is always received
             if (attacker.Class == "Mage") return false;
             else{
                 //Warriors have 25 percent chance to block damage
-                var outcome = GenerateNumberInRange(0, 100);
+                var outcome = new Random().Next(0, 100);
                 if (outcome <= 25) return true;
                 else return false;
             }
         }
-        public override void ReceiveReward()
+        public override void ReceiveReward(int experience, int gold, IItem item)
         {
             throw new NotImplementedException();
         }

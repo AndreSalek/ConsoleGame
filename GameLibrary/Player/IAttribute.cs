@@ -1,6 +1,7 @@
 ﻿
 namespace GameLibrary.Player
 {
+    //I made this interface so it can potentialy be reused for items
     public interface IAttribute
     {
         //Warrior main attribute
