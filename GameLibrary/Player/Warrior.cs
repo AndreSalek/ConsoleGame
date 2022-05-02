@@ -9,14 +9,16 @@ namespace GameLibrary.Player
     {
 
         public override string Class { get;  set; } = "Warrior";
+        public override int Ranking { get; set; }
 
-        public Warrior(string name, int str, int dex, int intell, int vit)
+        public Warrior(string name, int str, int dex, int intell, int vit, int ranking)
         {
             this.Name = name;
             this.Strength = str;
             this.Dexterity = dex;
             this.Intelligence = intell;
             this.Vitality = vit;
+            this.Ranking = ranking;
             this.EquippedWeapon = new Weapon("Starter weapon", 10, 15);
             UpdateDamage();
             UpdateMaxHealth();

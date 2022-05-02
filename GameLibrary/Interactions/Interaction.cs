@@ -10,11 +10,7 @@ namespace GameLibrary.Interactions
     //this class will contain all actions that player can do (quests,duels etc.)
     public class Interaction
     {
-        Logger log;
-        public Interaction(Logger log)
-        {
-            this.log = log;
-        }
+        public string lastFightLog;
         //Simulates 1v1 battle between two players
         //Battle is divided into turns
         //1 turn is when both players had a chance to attack
@@ -27,7 +23,7 @@ namespace GameLibrary.Interactions
             while (player.Health > 0 && player1.Health > 0)
             {
                 ++turn;
-                Console.WriteLine($"Turn { turn} started");
+                lastFightLog += $"Turn {turn} started\n";
                 //method SimulateTurn makes player that is passed first as parameter attack first
                 if (attackerFirst) SimulateTurn(player, player1);
                 else SimulateTurn(player1, player);

@@ -6,6 +6,7 @@ namespace GameLibrary.Player
     {
         public string Name { get; set; }
         public string Class { get; set; }
+        public int Ranking { get; set; }
         //Vitality*10 = Health, is used for fight damage calculation
         public int Health { get; set; }
         //Min/Max damage * (1 + main attribute / 10)

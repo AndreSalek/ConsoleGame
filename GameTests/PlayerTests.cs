@@ -1,6 +1,8 @@
 using System;
 using Xunit;
 using GameLibrary.Player;
+using GameLibrary.Interactions;
+using ConsoleUI;
 
 namespace GameTests
 {
@@ -10,12 +12,16 @@ namespace GameTests
         Warrior warrior;
         Scout scout;
         Mage mage;
+        Interaction interaction;
+        Factory factory;
         public PlayerTests()
         {
             //Arrange
-            warrior = new Warrior("Warrior", 15, 11, 12, 13);
-            scout = new Scout("Scout", 11, 15, 12, 13);
-            mage = new Mage("Mage", 11, 12, 15, 13);
+            interaction = new Interaction();
+            factory = new Factory();
+            warrior = factory.CreateWarrior("Warrior");
+            scout = factory.CreateScout("Warrior");
+            mage = factory.CreateMage("Warrior");
         }
 
         [Theory]
@@ -24,7 +30,7 @@ namespace GameTests
         public void GenerateNumberInRange_ShouldReturnIntValueInRange(int min, int max)
         {
             //Act
-            var number = warrior.GenerateNumberInRange(min,max);
+            var number = new Random().Next(min, max);
             //Assert
             Assert.InRange(number, min, max);
         }
@@ -152,16 +158,16 @@ namespace GameTests
             Assert.Equal(mage.EquippedWeapon.MaxDamage * (1 + mage.GetMainAttributeValue() / 10) * 2, mage.MaxDamage);
         }
         [Fact]
-        public void Duel_ShouldPlayerWithMoreThanZeroHealth()
+        public void Duel_ShouldWinPlayerWithMoreThanZeroHealth()
         {
-            Player winner = warrior.Duel(mage);
+            PlayerModel winner = interaction.Duel(warrior, mage);
 
             Assert.True(winner.Health > 0);
         }
         [Fact]
         public void SimulateTurn_BothPlayerShouldReceiveDamage()
         {
-            warrior.SimulateTurn(warrior, mage);
+            interaction.SimulateTurn(warrior, mage);
             /* two asserts because I need to check if both players received damage, which should happen 100
             percent of the time in this case */
             Assert.NotEqual(warrior.Health, warrior.Vitality * 10 * 2);

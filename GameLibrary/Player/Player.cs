@@ -8,6 +8,8 @@ namespace GameLibrary.Player
         private int _maxHealth;
         public string Name { get; set; }
         public abstract string Class { get; set; }
+
+        public abstract int Ranking { get; set; } 
         public Weapon EquippedWeapon { get; set; }
         public int Strength { get; set; }
         public int Dexterity { get; set; }

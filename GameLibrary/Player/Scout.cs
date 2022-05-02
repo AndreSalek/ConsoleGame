@@ -6,13 +6,15 @@ namespace GameLibrary.Player
     public class Scout : PlayerModel
     {
         public override string Class { get; set; } = "Scout";
-        public Scout(string name, int str, int dex, int intell, int vit)
+        public override int Ranking { get; set; }
+        public Scout(string name, int str, int dex, int intell, int vit, int ranking)
         {
             this.Name = name;
             this.Strength = str;
             this.Dexterity = dex;
             this.Intelligence = intell;
             this.Vitality = vit;
+            this.Ranking = ranking;
             this.EquippedWeapon = new Weapon("Starter weapon", 10, 15);
             UpdateDamage();
             UpdateMaxHealth();

@@ -18,23 +18,26 @@ namespace ConsoleUI
                 string name = Console.ReadLine();
                 Menu classMenu = new Menu(options, message);
                 int index = classMenu.Run();
+                /*creating opponents here because I want player to be last ranking
+                  at start so he needs to be intantiated later*/
+                factory.CreateOpponents(20);
                 if (index == 0)
                 {
                     PlayerModel player = factory.CreateWarrior(name);
-                    Game game = new Game(player);
+                    Game game = new Game(player, factory);
                     game.Run();
                 }
                 else if (index == 1)
                 {
                     PlayerModel player = factory.CreateScout(name);
-                    Game game = new Game(player);
+                    Game game = new Game(player, factory);
                     game.Run();
 
                 }
                 else if (index == 2)
                 {
                     PlayerModel player = factory.CreateMage(name);
-                    Game game = new Game(player);
+                    Game game = new Game(player, factory);
                     game.Run();
 
                 }
