@@ -6,6 +6,9 @@ namespace GameLibrary.Player
     {
         private int _health;
         private int _maxHealth;
+        private int _level;
+        private int _currentLevelExperience;
+
         public string Name { get; set; }
         public abstract string Class { get; set; }
 
@@ -24,12 +27,26 @@ namespace GameLibrary.Player
             set  { _health = value; if (_health < 0) _health = 0; }
         }
 
+        public int Gold { get; set; }
+        public int Level { get; set; }          //set changes current experience to 0, updates next level experience
+        public int CurrentExperience { get; set; }
+        public int NextLevelExperience { get; set; }
+        
         public event EventHandler<DamageEventArgs> DamageReceived;
 
         public abstract bool BlockOrDodge(PlayerModel attacker);
         protected virtual void OnDamageReceived(object sender, DamageEventArgs e)
         {
             DamageReceived?.Invoke(this, e);
+        }
+        protected void NextLevelExperienceUpdate()
+        {
+            if (CurrentExperience >= NextLevelExperience)    
+            {
+                CurrentExperience = 0;
+                Level += 1;
+                NextLevelExperience = 50 * Level * (1 + Level / 20);
+            }
         }
 
         public void ReceiveDamage(PlayerModel attacker, int dmg)
@@ -79,6 +96,11 @@ namespace GameLibrary.Player
             else if (Class == "Scout") _maxHealth = Convert.ToInt32(Math.Floor(_maxHealth * 1.5));
             else return;
         }
-        public abstract void ReceiveReward(int experience, int gold, IItem item);
+        public void ReceiveReward(int experience, int gold)
+        {
+            CurrentExperience += experience;
+            Gold += gold;
+            OnNextLevelExperienceUpdate();
+        }
     }
 }

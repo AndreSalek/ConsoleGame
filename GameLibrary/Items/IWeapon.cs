@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace GameLibrary.Items
 {
-    public interface IWeapon
+    interface IWeapon
     {
-        public int MinDamage { get; set; }
-        public int MaxDamage { get; set; }
+        int MinDamage { get; set; }
+        int MaxDamage { get; set; }
     }
 }

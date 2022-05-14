@@ -15,14 +15,14 @@ namespace ConsoleUI
         public Warrior CreateWarrior(string name)
         {
             lastRank++;
-            Warrior warrior = new Warrior(name, 15, 10, 10, 12, lastRank);
+            Warrior warrior = new Warrior(name, 15, 10, 10, 12, lastRank, 100, 0);
             playerModels.Add(warrior);
             return warrior;
         }
         public Scout CreateScout(string name)
         {
             lastRank++;
-            Scout scout = new Scout(name, 10, 15, 10, 12, lastRank);
+            Scout scout = new Scout(name, 10, 15, 10, 12, lastRank, 100, 0);
             playerModels.Add(scout);
 
             return scout;
@@ -30,7 +30,7 @@ namespace ConsoleUI
         public Mage CreateMage(string name)
         {
             lastRank++;
-            Mage mage = new Mage(name, 10, 10, 15, 12, lastRank);
+            Mage mage = new Mage(name, 10, 10, 15, 12, lastRank, 100, 0);
             playerModels.Add(mage);
             return mage;
         }

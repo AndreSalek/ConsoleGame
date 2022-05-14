@@ -18,21 +18,22 @@ namespace GameLibrary.Interactions
         {
             PlayerModel winner;
             int turn = 0;
-            var firstAttack = new Random().Next(0, 100);
-            bool attackerFirst = (firstAttack <= 50) ? true : false;
+            var firstAttackDecision = new Random().Next(0, 100);
+            bool attackFirstToken = (firstAttackDecision <= 50) ? true : false;
             while (player.Health > 0 && player1.Health > 0)
             {
                 ++turn;
                 lastFightLog += $"Turn {turn} started\n";
                 //method SimulateTurn makes player that is passed first as parameter attack first
-                if (attackerFirst) SimulateTurn(player, player1);
+                if (attackFirstToken) SimulateTurn(player, player1);
                 else SimulateTurn(player1, player);
             }
+
             if (player.Health == 0) winner = player1;
             else winner = player;
+
             player.RestoreHealth();
             player1.RestoreHealth();
-
             return winner;
         }
 

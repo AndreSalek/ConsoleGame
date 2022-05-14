@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameLibrary.Items
 {
-    public interface IItemWeapon: IItem, IWeapon
+    interface IItemWeapon: IItem, IWeapon
     {
     }
 }

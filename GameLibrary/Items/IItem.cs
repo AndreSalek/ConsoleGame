@@ -1,6 +1,6 @@
 ﻿namespace GameLibrary
 {
-    public interface IItem
+    interface IItem
     {
         string Name { get; set; }
         //Weapon,helmet,armor etc.

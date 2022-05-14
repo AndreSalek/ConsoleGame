@@ -11,7 +11,7 @@ namespace GameLibrary.Player
         public override string Class { get;  set; } = "Warrior";
         public override int Ranking { get; set; }
 
-        public Warrior(string name, int str, int dex, int intell, int vit, int ranking)
+        public Warrior(string name, int str, int dex, int intell, int vit, int ranking,int Gold, int Level)
         {
             this.Name = name;
             this.Strength = str;
@@ -20,6 +20,9 @@ namespace GameLibrary.Player
             this.Vitality = vit;
             this.Ranking = ranking;
             this.EquippedWeapon = new Weapon("Starter weapon", 10, 15);
+            this.Gold = Gold;
+            this.Level = Level;
+            NextLevelExperienceUpdate();
             UpdateDamage();
             UpdateMaxHealth();
             RestoreHealth();
@@ -37,10 +40,5 @@ namespace GameLibrary.Player
                 else return false;
             }
         }
-        public override void ReceiveReward(int experience, int gold, IItem item)
-        {
-            throw new NotImplementedException();
-        }
-        
     }
 }

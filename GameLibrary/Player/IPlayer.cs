@@ -2,20 +2,20 @@
 
 namespace GameLibrary.Player
 {
-    public interface IPlayer
+     public interface IPlayer
     {
-        public string Name { get; set; }
-        public string Class { get; set; }
-        public int Ranking { get; set; }
+        string Name { get; set; }
+        string Class { get; set; }
+        int Ranking { get; set; }
         //Vitality*10 = Health, is used for fight damage calculation
-        public int Health { get; set; }
+        int Health { get; set; }
         //Min/Max damage * (1 + main attribute / 10)
         //class affects damage too
-        public int MinDamage { get; set; }
-        public int MaxDamage { get; set; }
-        public event EventHandler<DamageEventArgs> DamageReceived;
+        int MinDamage { get; set; }
+        int MaxDamage { get; set; }
+        event EventHandler<DamageEventArgs> DamageReceived;
 
-        void ReceiveReward(int experience, int gold, IItem item);
+        void ReceiveReward(int experience, int gold);
         void ReceiveDamage(PlayerModel attacker, int dmg);
         bool BlockOrDodge(PlayerModel attacker);
         void RestoreHealth();

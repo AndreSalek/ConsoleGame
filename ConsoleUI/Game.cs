@@ -34,9 +34,9 @@ namespace ConsoleUI
                 string message = $"Class: { player.Class } \n";
                 message += $"Name: {player.Name} \n";
                 message += $"Weapon damage: {player.EquippedWeapon.MinDamage} - {player.EquippedWeapon.MaxDamage} \n";
-                message += $"Gold: -- \n";
-                message += $"Level: -- \n";
-                message += $"Experience: --/--\n";
+                message += $"Gold: {player.Gold} \n";
+                message += $"Level: {player.Level} \n";
+                message += $"Experience: {player.CurrentExperience}/{player.NextLevelExperience}\n";
                 message += $"_______________________\n";
                 string[] options = { "Go on quest", "Duel", "Tournament", "Improve attributes", "Exit" };
                 Menu mainMenu = new Menu(options, message);
@@ -69,7 +69,13 @@ namespace ConsoleUI
                         PlayerModel winner = interaction.Duel(player, opponent);
 
                         string outcome = "";
-                        if (winner == player) outcome += "You have won.";
+                        if (winner == player)
+                        {
+                            int experience = (25 * winner.Level) * (1 + winner.Level/5);
+                            int gold = 10 * winner.Level;
+                            winner.ReceiveReward(experience, gold);
+                            outcome += $"You have won. \n This fight earned you {experience} experience and {gold} gold";
+                        }
                         else outcome += "Enemy has won.";
 
                         outcome += " Do you want to see the fight log?";
