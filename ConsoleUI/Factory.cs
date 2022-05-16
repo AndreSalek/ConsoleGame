@@ -35,6 +35,15 @@ namespace ConsoleUI
             return mage;
         }
 
+        //for testing
+        public PlayerModel CreateCustomPlayer(string name, int strength, int dexterity, int intelligence, int vitality)
+        {
+            lastRank++;
+            Mage mage = new Mage(name, strength, dexterity, intelligence, vitality, lastRank, 100, 0);
+            playerModels.Add(mage);
+            return mage;
+        }
+
         public void CreateOpponents(int number)
         {
             for(int i = 0; i < number; i++)

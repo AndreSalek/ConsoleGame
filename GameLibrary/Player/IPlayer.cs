@@ -13,6 +13,10 @@ namespace GameLibrary.Player
         //class affects damage too
         int MinDamage { get; set; }
         int MaxDamage { get; set; }
+        int Gold { get; set; }
+        int Level { get; set; }          //set changes current experience to 0, updates next level experience
+        int CurrentExperience { get; set; }
+        int NextLevelExperience { get; set; }
         event EventHandler<DamageEventArgs> DamageReceived;
 
         void ReceiveReward(int experience, int gold);
@@ -21,6 +25,5 @@ namespace GameLibrary.Player
         void RestoreHealth();
         public int GetMainAttributeValue();
         public void UpdateDamage();
-
     }
 }

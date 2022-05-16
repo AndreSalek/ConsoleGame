@@ -11,6 +11,7 @@ namespace GameLibrary.Interactions
     public class Interaction
     {
         public string lastFightLog;
+
         //Simulates 1v1 battle between two players
         //Battle is divided into turns
         //1 turn is when both players had a chance to attack
@@ -35,6 +36,41 @@ namespace GameLibrary.Interactions
             player.RestoreHealth();
             player1.RestoreHealth();
             return winner;
+        }
+
+        //returns winner of the tournament
+        public PlayerModel Tournament(List<PlayerModel> players)
+        {
+            int playerCount = players.Count();
+            if (!(playerCount % 2 == 0)) return null;                  //Tournament will start only when players count is even
+            List<int> roundLoserIndex = new List<int>();
+            int cycles = 0;
+            //Count how many rounds needs to happen until one PlayerModel is left
+            while (playerCount > 1)
+            {
+                playerCount /= 2;
+                cycles += 1;
+            }
+            //repeat fighting until variable cycles reaches 0
+            for(int i = cycles; i > 0; i--)
+            {
+                //duel until every PlayerModel had it's duel
+                //Add loosers index in players list to roundLoserIndex
+                for (int j = 0; j < players.Count()/2; j++)
+                {
+                    PlayerModel duelWinner = Duel(players[j], players[players.Count() -  1 - j]);
+                    if (duelWinner == players[j]) roundLoserIndex.Add(players.Count() - 1 - j);
+                    else roundLoserIndex.Add(j);
+                }
+                //Remove players that lost from players list 
+                foreach(int index in roundLoserIndex)
+                {
+                    players.RemoveAt(index);
+                }
+                //clear indexes for new cycle
+                roundLoserIndex.Clear();
+            }
+            return players[0];
         }
 
         //simulates 1 turn fight between 2 players

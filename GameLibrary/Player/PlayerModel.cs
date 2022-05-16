@@ -100,7 +100,13 @@ namespace GameLibrary.Player
         {
             CurrentExperience += experience;
             Gold += gold;
-            OnNextLevelExperienceUpdate();
+            NextLevelExperienceUpdate();
+        }
+
+
+        public void ImproveAttribute(string attribute, int number)
+        {
+            if (attribute == "Vitality") this.Vitality += number;
         }
     }
 }
