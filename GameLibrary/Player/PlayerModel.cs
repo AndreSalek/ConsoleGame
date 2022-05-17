@@ -2,12 +2,11 @@
 using System;
 namespace GameLibrary.Player
 {
-    public abstract class PlayerModel : IPlayerWithAttributes
+    public abstract class PlayerModel : IPlayer
     {
         private int _health;
         private int _maxHealth;
-        private int _level;
-        private int _currentLevelExperience;
+        private int _vitality;
 
         public string Name { get; set; }
         public abstract string Class { get; set; }
@@ -17,7 +16,15 @@ namespace GameLibrary.Player
         public int Strength { get; set; }
         public int Dexterity { get; set; }
         public int Intelligence { get; set; }
-        public int Vitality { get; set; }
+        public int Vitality
+        {
+            get { return _vitality; }
+            set
+            {
+                _vitality = value;
+                UpdateMaxHealth();
+            }
+        }
         public int MinDamage { get; set; }
         public int MaxDamage { get; set; }
         public int Health                     
@@ -49,14 +56,19 @@ namespace GameLibrary.Player
             }
         }
 
-        public void ReceiveDamage(PlayerModel attacker, int dmg)
+        public int GetHealth()
+        {
+            return _maxHealth;
+        }
+
+        public void ReceiveDamage(PlayerModel attacker, int dmg, bool isMainPlayer)
         {
             bool mitigated = BlockOrDodge(attacker);
-            if(mitigated) OnDamageReceived(attacker, new DamageEventArgs { Player = this, DamageTaken = 0 });
+            if(mitigated) OnDamageReceived(attacker, new DamageEventArgs { Player = this, DamageTaken = 0, isMainPlayerFight = isMainPlayer });
             else
             {
                 Health -= dmg;
-                OnDamageReceived(attacker, new DamageEventArgs { Player = this, DamageTaken = dmg });
+                OnDamageReceived(attacker, new DamageEventArgs { Player = this, DamageTaken = dmg, isMainPlayerFight = isMainPlayer });
             }
         }
         //restore to max health
@@ -103,10 +115,21 @@ namespace GameLibrary.Player
             NextLevelExperienceUpdate();
         }
 
-
-        public void ImproveAttribute(string attribute, int number)
+        public int GetAttribute(int attributeNumber)
         {
-            if (attribute == "Vitality") this.Vitality += number;
+            if (attributeNumber == 0) return this.Strength;
+            else if (attributeNumber == 1) return this.Dexterity;
+            else if (attributeNumber == 2) return this.Intelligence;
+            else if (attributeNumber == 3) return this.Vitality;
+            return 0;
+        }
+        public int ImproveAttribute(int attributeNumber, int addToAttribute)
+        {
+            if (attributeNumber == 0) this.Strength += addToAttribute;
+            else if (attributeNumber == 1) this.Dexterity += addToAttribute;
+            else if (attributeNumber == 2) this.Intelligence += addToAttribute;
+            else if (attributeNumber == 3) this.Vitality += addToAttribute;
+            return 0;
         }
     }
 }

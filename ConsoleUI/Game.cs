@@ -14,15 +14,18 @@ namespace ConsoleUI
     {
         public PlayerModel player;
 
-        private Interaction interaction = new Interaction();
+        private Interaction interaction;
         private Factory factory;
+        string fightOutcome = "";
 
         public bool OpenApplication { get; private set; }
 
-        public Game(PlayerModel player, Factory factory)
+        public Game(Factory factory, PlayerModel player)
         {
-            this.player = factory.CreateCustomPlayer("Whizit", 50,50,50,50);
             this.factory = factory;
+            this.player = player;
+            //factory.CreateCustomPlayer("me", 1, 50, 51, 52, 53);
+            this.interaction = new Interaction(player);
             OpenApplication = true;
         }
 
@@ -37,10 +40,11 @@ namespace ConsoleUI
                 message += $"Strength: {player.Strength}\n";
                 message += $"Dexterity: {player.Dexterity}\n";
                 message += $"Intelligence: {player.Intelligence}\n";
-                message += $"Vitality: {player.Vitality} (Health: {player.Health})\n";
+                message += $"Vitality: {player.Vitality} (Health: {player.GetHealth()})\n";
                 message += $"Gold: {player.Gold} \n";
                 message += $"Level: {player.Level} \n";
                 message += $"Experience: {player.CurrentExperience}/{player.NextLevelExperience}\n";
+                message += $"Ranking: {player.Ranking} \n";
                 message += $"_______________________\n";
                 string[] options = { "Duel", "Tournament", "Improve attributes", "Exit" };
                 Menu mainMenu = new Menu(options, message);
@@ -53,37 +57,24 @@ namespace ConsoleUI
                         List<PlayerModel> opponentList = GetOpponents(3);
                         //Taking string information about opponents
                         string[] opponentOptions = PlayerInfoToArray("","",opponentList);
-                        Console.WriteLine(opponentList[0].Class);
                         //choose opponent
                         Menu opponentsMenu = new Menu(opponentOptions, "Choose opponent you want to duel:");
                         //get chosen opponent index
                         int opponentIndex = opponentsMenu.Run();
                         PlayerModel opponent = opponentList[opponentIndex];
-                        //events for creating fight log
-                        player.DamageReceived += Player_DamageReceived;
-                        opponent.DamageReceived += Opponent_DamageReceived;
 
                         PlayerModel winner = interaction.Duel(player, opponent);
 
-                        string outcome = "";
+                        
                         if (winner == player)
                         {
                             int experience = (25 * winner.Level) * (1 + winner.Level / 5);
                             int gold = 10 * winner.Level;
                             winner.ReceiveReward(experience, gold);
-                            outcome += $"You have won. \n This fight earned you {experience} experience and {gold} gold";
+                            fightOutcome += $"You have won. \n This fight earned you {experience} experience and {gold} gold";
                         }
-                        else outcome += "Enemy has won.";
-
-                        outcome += " Do you want to see the fight log?";
-                        string[] logOptions = new string[2] { "Yes", "No" };
-                        Menu menu = new Menu(logOptions, outcome);
-                        int seeLog = menu.Run();
-                        if (seeLog == 0)
-                        {
-                            Menu logMenu = new Menu(new string[1] {"Close"}, interaction.lastFightLog);
-                            logMenu.Run();
-                        }
+                        else fightOutcome += "Enemy has won.";
+                        DisplayLogsMenu();
                         break;
                     case 1:
                         //Tournament
@@ -95,28 +86,46 @@ namespace ConsoleUI
                         {
                             models.Add(player);                                                                                             //adding player to tournament list
                             PlayerModel tournamentWinner = interaction.Tournament(models);                                                  //Startig tournament
-                            if(tournamentWinner == player)
+                            int experience = (25 * player.Level) * (1 + player.Level);
+                            int gold = 150 * player.Level;
+                            if (tournamentWinner == player)
                             {
-                                int experience = (25 * player.Level) * (1 + player.Level);
-                                int gold = 150 * player.Level;
                                 player.ReceiveReward(experience, gold);
-                                player.Ranking++;
-                                Console.WriteLine($"You have won. \n This tournament earned you {experience} experience and {gold} gold and earned +1 ranking");
-                                Console.ReadKey();
+                                player.Ranking--;
+                                fightOutcome += $"You have won. \n This tournament earned you {experience} experience and {gold} gold and earned -1 ranking \n";
                             }
                             else
                             {
-                                Console.WriteLine("You have lost. Try again next time.");
-                                Console.ReadKey();
+                                fightOutcome += "You have lost. Try again next time. \n";
                             }
+                            DisplayLogsMenu();
                         }
                         break;
                     case 2:
                         //Improve attributes
                         string[] opt = new string[4] { "Strength", "Dexterity", "Intelligence", "Vitality" };
                         Menu attributesMenu = new Menu(opt, "Which attribute you want to improve ?");
-                        int attribute = attributesMenu.Run();
-                        
+                        int attributeNumber = attributesMenu.Run();
+                        string[] numberOpt = new string[3] { $"+1 (Price: {GetPrice(attributeNumber, 1)})", $"+5 (Price: {GetPrice(attributeNumber, 5)})", $"+10 (Price: {GetPrice(attributeNumber, 10)})" };
+                        Menu numberMenu = new Menu(numberOpt, "By how much you want to improve ?");
+                        int improveNumber = numberMenu.Run();
+                        int addToAttribute;
+                        if (improveNumber == 0)
+                        {
+                            addToAttribute = 1;
+                        }
+                        else if (improveNumber == 1)
+                        {
+                            addToAttribute = 5;
+                        }
+                        else addToAttribute = 10;
+                        int price = GetPrice(attributeNumber, addToAttribute);
+                        bool success = ChargePlayerGoldAndImprove(attributeNumber, addToAttribute, price);
+                        if (!success)
+                        {
+                            Console.WriteLine("You don't have enough gold.");
+                            Console.ReadLine();
+                        }
                         break;
                     case 3:
                         OpenApplication = false;
@@ -129,6 +138,46 @@ namespace ConsoleUI
                 }
             }
             
+        }
+
+        private int GetPrice(int attributeNumber, int addToAttribute)
+        {
+            int price = 0;
+            int attributeSubtotal;
+            int attribute = player.GetAttribute(attributeNumber);
+            for (int i = 0; i < addToAttribute; i++)
+            {
+                attributeSubtotal = attribute + i;
+                price += (attributeSubtotal / 10) * attributeSubtotal;
+            }
+            return price;
+        }
+        private bool ChargePlayerGoldAndImprove(int attributeNumber,int addToAttribute, int price)
+        {
+            if (player.Gold > price)
+            {
+                player.Gold -= price;
+                player.ImproveAttribute(attributeNumber, addToAttribute);
+                return true;
+            }
+            else return false;
+        }
+
+
+        //fight log handling menu
+        private void DisplayLogsMenu()
+        {
+            fightOutcome += " Do you want to see the fight log?\n";
+            string[] logOptions = new string[2] { "Yes", "No" };
+            Menu menu = new Menu(logOptions, fightOutcome);
+            int seeLog = menu.Run();
+            if (seeLog == 0)
+            {
+                Menu logMenu = new Menu(new string[1] { "Close" }, interaction.fightLogs);
+                logMenu.Run();
+            }
+            interaction.fightLogs = interaction.fightLogs.Remove(0);
+            fightOutcome = fightOutcome.Remove(0);
         }
 
         private string[] PlayerInfoToArray(string startMessage, string endMessage, List<PlayerModel> opponentList)
@@ -175,16 +224,5 @@ namespace ConsoleUI
                 if (player.Ranking < model.Ranking && model.Ranking <= player.Ranking + number) yield return model;
             }
         }
-
-        private void Opponent_DamageReceived(object sender, DamageEventArgs e)
-        {
-            interaction.lastFightLog += $"{e.Player.Name} has {e.Player.Health} HP after receiving {e.DamageTaken} damage.\n";
-        }
-
-        private void Player_DamageReceived(object sender, DamageEventArgs e)
-        {
-            interaction.lastFightLog += $"{e.Player.Name} has {e.Player.Health} HP after receiving {e.DamageTaken} damage.\n";
-        }
-        
     }
 }

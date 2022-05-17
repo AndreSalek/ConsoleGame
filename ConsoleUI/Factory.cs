@@ -36,12 +36,15 @@ namespace ConsoleUI
         }
 
         //for testing
-        public PlayerModel CreateCustomPlayer(string name, int strength, int dexterity, int intelligence, int vitality)
+        public PlayerModel CreateCustomPlayer(string name,int classNumber, int strength, int dexterity, int intelligence, int vitality)
         {
             lastRank++;
+            PlayerModel playerModel;
+            if (classNumber == 1) playerModels.Add(new Warrior(name, strength, dexterity, intelligence, vitality, lastRank, 100, 0));
+            else if (classNumber == 2) playerModels.Add(new Scout(name, strength, dexterity, intelligence, vitality, lastRank, 100, 0));
+            else if (classNumber == 3) playerModels.Add(new Mage(name, strength, dexterity, intelligence, vitality, lastRank, 100, 0));
             Mage mage = new Mage(name, strength, dexterity, intelligence, vitality, lastRank, 100, 0);
-            playerModels.Add(mage);
-            return mage;
+            return playerModels.Last();
         }
 
         public void CreateOpponents(int number)
