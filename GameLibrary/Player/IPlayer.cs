@@ -28,7 +28,7 @@ namespace GameLibrary.Player
         event EventHandler<DamageEventArgs> DamageReceived;
 
         void ReceiveReward(int experience, int gold);
-        void ReceiveDamage(PlayerModel attacker, int dmg, bool isMainPlayer);
+        void ReceiveDamage(PlayerModel attacker, int dmg);
         bool BlockOrDodge(PlayerModel attacker);
         void RestoreHealth();
         public int GetMainAttributeValue();

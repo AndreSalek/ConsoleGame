@@ -37,6 +37,7 @@ namespace ConsoleUI
                 string message = $"Class: { player.Class } \n";
                 message += $"Name: {player.Name} \n";
                 message += $"Weapon damage: {player.EquippedWeapon.MinDamage} - {player.EquippedWeapon.MaxDamage} \n";
+                message += $"Player Damage: {player.MinDamage} - {player.MaxDamage}\n";
                 message += $"Strength: {player.Strength}\n";
                 message += $"Dexterity: {player.Dexterity}\n";
                 message += $"Intelligence: {player.Intelligence}\n";

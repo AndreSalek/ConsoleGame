@@ -33,11 +33,7 @@ namespace GameLibrary.Interactions
                 player.DamageReceived += Player_DamageReceived;
                 player1.DamageReceived += Opponent_DamageReceived;
             }
-            else
-            {
-                player.DamageReceived -= Player_DamageReceived;
-                player1.DamageReceived -= Opponent_DamageReceived;
-            }
+
                 while (player.Health > 0 && player1.Health > 0)
             {
                 ++turn;
@@ -49,6 +45,9 @@ namespace GameLibrary.Interactions
             if (player.Health == 0) winner = player1;
             else winner = player;
 
+            player.DamageReceived -= Player_DamageReceived;
+            player1.DamageReceived -= Opponent_DamageReceived;
+            
             player.RestoreHealth();
             player1.RestoreHealth();
             return winner;
@@ -95,8 +94,10 @@ namespace GameLibrary.Interactions
                     if (duelWinner == players[j]) roundLoserIndex.Add(players.Count() - 1 - j);
                     else roundLoserIndex.Add(j);
                 }
+                roundLoserIndex.Sort();
+                roundLoserIndex.Reverse();
                 //Remove players that lost from players list 
-                foreach(int index in roundLoserIndex)
+                foreach (int index in roundLoserIndex)
                 {
                     players.RemoveAt(index);
                 }
@@ -114,10 +115,10 @@ namespace GameLibrary.Interactions
         {
             int dmg;
             dmg = new Random().Next(player.MinDamage, player.MaxDamage);
-            player1.ReceiveDamage(player, dmg, isMainPlayerFight);
+            player1.ReceiveDamage(player, dmg);
             if (player.Health == 0 || player1.Health == 0) return;
             dmg = new Random().Next(player1.MinDamage, player1.MaxDamage);
-            player.ReceiveDamage(player1, dmg, isMainPlayerFight);
+            player.ReceiveDamage(player1, dmg);
         }
 
         private void Opponent_DamageReceived(object sender, DamageEventArgs e)

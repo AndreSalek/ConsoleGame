@@ -61,14 +61,14 @@ namespace GameLibrary.Player
             return _maxHealth;
         }
 
-        public void ReceiveDamage(PlayerModel attacker, int dmg, bool isMainPlayer)
+        public void ReceiveDamage(PlayerModel attacker, int dmg)
         {
             bool mitigated = BlockOrDodge(attacker);
-            if(mitigated) OnDamageReceived(attacker, new DamageEventArgs { Player = this, DamageTaken = 0, isMainPlayerFight = isMainPlayer });
+            if(mitigated) OnDamageReceived(attacker, new DamageEventArgs { Player = this, DamageTaken = 0 });
             else
             {
                 Health -= dmg;
-                OnDamageReceived(attacker, new DamageEventArgs { Player = this, DamageTaken = dmg, isMainPlayerFight = isMainPlayer });
+                OnDamageReceived(attacker, new DamageEventArgs { Player = this, DamageTaken = dmg });
             }
         }
         //restore to max health
@@ -129,6 +129,7 @@ namespace GameLibrary.Player
             else if (attributeNumber == 1) this.Dexterity += addToAttribute;
             else if (attributeNumber == 2) this.Intelligence += addToAttribute;
             else if (attributeNumber == 3) this.Vitality += addToAttribute;
+            UpdateDamage();
             return 0;
         }
     }

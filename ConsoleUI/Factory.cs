@@ -15,7 +15,7 @@ namespace ConsoleUI
         public Warrior CreateWarrior(string name)
         {
             lastRank++;
-            Warrior warrior = new Warrior(name, 15, 10, 10, 12, lastRank, 100, 0);
+            Warrior warrior = new Warrior(name, 15, 10, 10, 12, lastRank, 10000, 0);
             playerModels.Add(warrior);
             return warrior;
         }
