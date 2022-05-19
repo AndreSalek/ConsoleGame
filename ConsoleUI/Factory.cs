@@ -11,11 +11,12 @@ namespace ConsoleUI
     {
         public int lastRank = 0;
         public List<PlayerModel> playerModels = new List<PlayerModel>();
+        private NameGenerator nameGenerator = new NameGenerator();
         //creating classes with starting attributes and giving last ranking
         public Warrior CreateWarrior(string name)
         {
             lastRank++;
-            Warrior warrior = new Warrior(name, 15, 10, 10, 12, lastRank, 10000, 0);
+            Warrior warrior = new Warrior(name, 15, 10, 10, 12, lastRank, 100, 0);
             playerModels.Add(warrior);
             return warrior;
         }
@@ -43,7 +44,6 @@ namespace ConsoleUI
             if (classNumber == 1) playerModels.Add(new Warrior(name, strength, dexterity, intelligence, vitality, lastRank, 100, 0));
             else if (classNumber == 2) playerModels.Add(new Scout(name, strength, dexterity, intelligence, vitality, lastRank, 100, 0));
             else if (classNumber == 3) playerModels.Add(new Mage(name, strength, dexterity, intelligence, vitality, lastRank, 100, 0));
-            Mage mage = new Mage(name, strength, dexterity, intelligence, vitality, lastRank, 100, 0);
             return playerModels.Last();
         }
 
@@ -52,10 +52,9 @@ namespace ConsoleUI
             for(int i = 0; i < number; i++)
             {
                 int classNumber = new Random().Next(1,4);       // generate number between 1 and 4 (3 is max number that can ben rolled)
-                Console.WriteLine(classNumber);
-                if(classNumber == 1) CreateWarrior("");                   //I'll create some random names for them later
-                else if (classNumber == 2) CreateScout("");
-                else if (classNumber == 3) CreateMage("");
+                if(classNumber == 1) CreateWarrior(nameGenerator.GetNameFromFile());                   //I'll create some random names for them later
+                else if (classNumber == 2) CreateScout(nameGenerator.GetNameFromFile());
+                else if (classNumber == 3) CreateMage(nameGenerator.GetNameFromFile());
             }
         }
     }
